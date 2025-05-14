@@ -1,0 +1,46 @@
+clear;
+clc;
+R_result=zeros(1,100);
+for i=1:100
+    xupper=i;
+    numberofpoint=10*xupper;
+% 生成示例数据
+
+    x =linspace(0,xupper,numberofpoint);
+    y =x+randn(size(x));
+
+    % 进行直线拟合
+    p = polyfit(x, y, 1); % 一次多项式拟合，p 为拟合系数，p(1) 是斜率，p(2) 是截距
+
+    % 计算拟合值
+    y_fit = polyval(p, x);
+
+    % 计算 R^2 值
+    SST = sum((y - mean(y)).^2); % 总离差平方和
+    SSE = sum((y - y_fit).^2); % 残差平方和
+    R_squared = 1 - SSE / SST;
+    R_result(i)=R_squared;
+
+    % 计算偏差值
+    deviation = y - y_fit;
+
+    % 输出结果
+    fprintf('拟合直线的方程为: y = %.2fx + %.2f\n', p(1), p(2));
+    fprintf('R^2 值为: %.4f\n', R_squared);
+    disp('偏差值为:');
+    disp(deviation);
+end
+plot(R_result)
+xlabel('number of point of line')
+ylabel('R^2')
+title('R方与点数关系')
+    % 绘制原始数据和拟合直线
+% figure;
+% plot(x, y, 'ro', 'DisplayName', '原始数据'); % 绘制原始数据点
+% hold on;
+% plot(x, y_fit, 'b-', 'DisplayName', '拟合直线'); % 绘制拟合直线
+% xlabel('x');
+% ylabel('y');
+% title('直线拟合结果');
+% legend;
+% grid on;
